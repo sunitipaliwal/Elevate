@@ -8,11 +8,13 @@ export const googleCallback = async (req, res) => {
 
     const token = generateToken(user._id);
 
-    res.cookie("token", token, {
+   const isProd = process.env.NODE_ENV === "production";
+
+   res.cookie("token", token, {
      httpOnly: true,
-     secure: false,
-     sameSite: "lax"
-    });
+     secure: isProd,
+     sameSite: isProd ? "none" : "lax"
+   });
 
     res.redirect(`${process.env.CLIENT_URL}/dashboard`);
 
